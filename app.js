@@ -13,7 +13,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 // const { errors } = require('celebrate');
-// const cors = require('cors');
+const cors = require('cors');
 // const expressLimiter = require('express-rate-limit');
 // const helmet = require('helmet');
 
@@ -64,6 +64,7 @@ const app = express();
 // };
 
 // app.use('*', cors(options));
+app.use('*', cors());
 
 // cookie parser
 app.use(cookieParser());

@@ -1,4 +1,4 @@
-// const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
 const User = require('../models/user');
@@ -62,6 +62,59 @@ module.exports.createUser = (req, res, next) => {
       }
     });
 };
+
+// logs user in and sends JWT back
+module.exports.login = (req, res, next) => {
+  const { email, password } = req.body;
+  const { NODE_ENV, JWT_SECRET } = process.env;
+
+  User.findUserByCredentials({ email, password })
+    .then((user) => {
+      const token = jwt.sign(
+        { _id: user._id },
+        NODE_ENV === 'production' ? JWT_SECRET : 'dev',
+        { expiresIn: '7d' },
+      );
+
+      res.cookie('jwt', token, {
+        maxAge: 3600000 * 24 * 7,
+        httpOnly: true,
+        sameSite: 'none',
+        secure: NODE_ENV === 'production',
+      });
+
+      res.send({ message: 'ok' });
+    })
+    .catch((err) => {
+      res.clearCookie('jwt');
+      // othervise cookies sent but not set
+      // res.cookie('jwt', '', {
+      //   maxAge: 3600000 * 24 * 7,
+      //   httpOnly: true,
+      //   sameSite: 'none',
+      //   secure: NODE_ENV === 'production',
+      // });
+
+      next(err);
+    });
+};
+
+// logout controller
+module.exports.logout = (req, res) => {
+  const { NODE_ENV } = process.env;
+
+  res.clearCookie('jwt');
+  // othervise cookies sent but not set
+  // res.cookie('jwt', '', {
+  //   maxAge: 3600000 * 24 * 7,
+  //   httpOnly: true,
+  //   sameSite: 'none',
+  //   secure: NODE_ENV === 'production',
+  // });
+
+  res.send({ message: 'До новых встреч!' });
+};
+
 
 // // get all users from Db
 // module.exports.getUsers = (req, res, next) => {
@@ -153,56 +206,6 @@ module.exports.createUser = (req, res, next) => {
 //         next(err);
 //       }
 //     });
-// };
-
-// // logs user in and sends JWT back
-// module.exports.login = (req, res, next) => {
-//   const { email, password } = req.body;
-//   const { NODE_ENV, JWT_SECRET } = process.env;
-
-//   User.findUserByCredentials({ email, password })
-//     .then((user) => {
-//       const token = jwt.sign(
-//         { _id: user._id },
-//         NODE_ENV ? JWT_SECRET : 'dev',
-//         { expiresIn: '7d' },
-//       );
-
-//       res.cookie('jwt', token, {
-//         maxAge: 3600000 * 24 * 7,
-//         httpOnly: true,
-//         sameSite: 'none',
-//         secure: true,
-//       });
-
-//       res.send({ message: 'ok' });
-//     })
-//     .catch((err) => {
-//       // res.clearCookie('jwt');
-//       // othervise cookies sent but not set
-//       res.cookie('jwt', '', {
-//         maxAge: 3600000 * 24 * 7,
-//         httpOnly: true,
-//         sameSite: 'none',
-//         secure: true,
-//       });
-
-//       next(err);
-//     });
-// };
-
-// // logout controller
-// module.exports.logout = (req, res) => {
-//   // res.clearCookie('jwt');
-//   // othervise cookies sent but not set
-//   res.cookie('jwt', '', {
-//     maxAge: 3600000 * 24 * 7,
-//     httpOnly: true,
-//     sameSite: 'none',
-//     secure: true,
-//   });
-
-//   res.send({ message: 'До новых встреч!' });
 // };
 
 // // gets current user info

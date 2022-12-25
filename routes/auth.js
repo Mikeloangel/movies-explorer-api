@@ -6,20 +6,19 @@
 const router = require('express').Router();
 
 const { Joi, celebrate } = require('celebrate');
-// const { login, logout, createUser } = require('../controllers/users');
-const { createUser } = require('../controllers/users');
+const { login, logout, createUser } = require('../controllers/users');
 
-// // signin / signup routes
-// router.post(
-//   '/signin',
-//   celebrate({
-//     body: Joi.object().keys({
-//       email: Joi.string().required().email(),
-//       password: Joi.string().required(),
-//     }),
-//   }),
-//   login,
-// );
+// signin / signup routes
+router.post(
+  '/signin',
+  celebrate({
+    body: Joi.object().keys({
+      email: Joi.string().required().email(),
+      password: Joi.string().required(),
+    }),
+  }),
+  login,
+);
 
 router.post(
   '/signup',
@@ -33,6 +32,6 @@ router.post(
   createUser,
 );
 
-// router.get('/signout', logout);
+router.get('/signout', logout);
 
 module.exports = router;
