@@ -1,7 +1,7 @@
 const router = require('express').Router();
 
 // middleware auth
-// const { auth } = require('../middlewares/auth');
+const { auth } = require('../middlewares/auth');
 
 // all routes
 const usersRoutes = require('./users');
@@ -13,7 +13,8 @@ const ResourceNotFoundError = require('../errors/not-found-error');
 // unprotected routes
 // router.use('/', authRoutes);
 
-// router.use(auth);
+router.use(auth);
+
 // protected routes
 router.use('/users', usersRoutes);
 router.use('/movies', moviesRoutes);

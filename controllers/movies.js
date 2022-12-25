@@ -19,8 +19,7 @@ module.exports.postMovie = (req, res, next) => {
     nameEN,
   } = req.body;
 
-  // const { _id } = req.user;
-  const _id = '63a81fba2cbfd4d7b7626972';
+  const _id = req.user;
 
   Movie.create({
     country,
@@ -47,8 +46,7 @@ module.exports.postMovie = (req, res, next) => {
 };
 
 module.exports.deleteMovie = (req, res, next) => {
-  // const { _id } = req.user;
-  const _id = '63a81fba2cbfd4d7b7626972';
+  const _id = req.user;
   const { id: movieId } = req.params;
 
   Movie.findOne({ _id: movieId })
@@ -77,8 +75,7 @@ module.exports.deleteMovie = (req, res, next) => {
 };
 
 module.exports.getMovies = (req, res, next) => {
-  // const { _id } = req.user;
-  const _id = '63a81fba2cbfd4d7b7626972';
+  const _id = req.user;
 
   Movie.find({ owner: _id })
     .then((cards) => res.send(cards))

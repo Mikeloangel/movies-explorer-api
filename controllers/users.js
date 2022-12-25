@@ -8,7 +8,7 @@ const WrongDataError = require('../errors/wrong-data-error');
 // const ResourceNotFoundError = require('../errors/not-found-error');
 
 module.exports.getMe = (req, res, next) => {
-  User.findById(req.user || '63a81fba2cbfd4d7b7626972')
+  User.findById(req.user)
     .orFail()
     .then((user) => {
       res.send(user);
@@ -17,8 +17,7 @@ module.exports.getMe = (req, res, next) => {
 };
 
 module.exports.patchMe = (req, res, next) => {
-  // const { _id } = req.user;
-  const _id = '63a81fba2cbfd4d7b7626972';
+  const _id = req.user;
   const { name, email } = req.body;
 
   User.findByIdAndUpdate(_id, { name, email }, { new: true, runValidators: true })
@@ -31,7 +30,6 @@ module.exports.patchMe = (req, res, next) => {
       }
     });
 };
-
 
 // // get all users from Db
 // module.exports.getUsers = (req, res, next) => {
