@@ -1,9 +1,9 @@
 require('dotenv').config();
 
 const {
-  PORT = 3100,
-  DB_NAME,
-  DB_URL,
+  PORT = 3000,
+  DB_NAME = 'bitfilmsdb',
+  DB_URL = 'mongodb://localhost:27017',
 } = process.env;
 
 // libs
@@ -21,48 +21,25 @@ const helmet = require('helmet');
 const { handleErrors } = require('./middlewares/handleErrors');
 const { errorLogger, requestLogger } = require('./middlewares/logger');
 
+// utils
+const { limiterSettings } = require('./utils/ratelimiter');
+const { corsOptions } = require('./utils/corsoptions');
+
 // routes
 const indexRoutes = require('./routes/index');
 
+// db and app
 mongoose.connect(`${DB_URL}/${DB_NAME}`);
-
 const app = express();
 
 // rate limiter
-const limiter = expressLimiter({
-  windowMs: 15 * 60 * 1000,
-  max: 100,
-});
-
-app.use(limiter);
+app.use(expressLimiter(limiterSettings));
 
 // helmet
 app.use(helmet());
 
 // cors
-const options = {
-  origin: [
-    'http://localhost:3000',
-    'http://mestology.nomoredomains.club',
-    'https://mestology.nomoredomains.club',
-  ],
-  methods: ['GET', 'HEAD', 'PATCH', 'POST', 'DELETE'],
-  preflightContinue: false,
-  optionsSuccessStatus: 204,
-  allowedHeaders:
-    [
-      'Content-Type',
-      'origin',
-      'Authorization',
-      'Accept',
-      'Access-Control-Allow-Headers',
-      'credentials',
-      'withCredentials',
-    ],
-  credentials: true,
-};
-
-app.use('*', cors(options));
+app.use('*', cors(corsOptions));
 
 // cookie parser
 app.use(cookieParser());
@@ -87,4 +64,7 @@ app.use(errors());
 app.use(handleErrors);
 
 // server
-app.listen(PORT, () => {});
+app.listen(PORT, () => {
+  // eslint-disable-next-line
+  console.log(`Movies backend runs on PORT: ${PORT}`);
+});
