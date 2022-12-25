@@ -6,16 +6,15 @@ const { auth } = require('../middlewares/auth');
 // all routes
 const usersRoutes = require('./users');
 const moviesRoutes = require('./movies');
-// const authRoutes = require('./auth');
+const authRoutes = require('./auth');
 
 const ResourceNotFoundError = require('../errors/not-found-error');
 
 // unprotected routes
-// router.use('/', authRoutes);
-
-router.use(auth);
+router.use('/', authRoutes);
 
 // protected routes
+router.use(auth);
 router.use('/users', usersRoutes);
 router.use('/movies', moviesRoutes);
 
