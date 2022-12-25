@@ -1,57 +1,28 @@
 // users routes
-// GET /me - возвращает информацию о пользователе (email и имя)
-// PATCH /me - обновляет информацию о пользователе (email и имя)
-
-// GET / get user list
-// GET /me get current user
-// GET /:userId get user by id
-// PATCH /me updates user info
-// PATCH /me/avatar updates avatar
+// GET /me - returns user info (email, name)
+// PATCH /me - updates user info (email, name)
 
 const router = require('express').Router();
-// const { celebrate, Joi } = require('celebrate');
+const { celebrate, Joi } = require('celebrate');
 
 const {
   getMe,
   patchMe,
 } = require('../controllers/users');
 
+// get me
 router.get('/me', getMe);
-router.patch('/me', patchMe);
 
-// router.get('/', getUsers);
-// router.get('/me', getUserMe);
-
-// router.get(
-//   '/:userId',
-//   celebrate({
-//     params: Joi.object().keys({
-//       userId: Joi.string().length(24).hex(),
-//     }),
-//   }),
-//   getUserById,
-// );
-
-// router.patch(
-//   '/me',
-//   celebrate({
-//     body: Joi.object().keys({
-//       name: Joi.string().min(2).max(30),
-//       about: Joi.string().min(2).max(30),
-//     }),
-//   }),
-//   updateUserInfo,
-// );
-
-// router.patch(
-//   '/me/avatar',
-//   celebrate({
-//     body: Joi.object().keys({
-// eslint-disable-next-line
-//       avatar: Joi.string().pattern(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&\/=]*)/).required(),
-//     }),
-//   }),
-//   updateUserAvatar,
-// );
+// patch me
+router.patch(
+  '/me',
+  celebrate({
+    body: Joi.object().keys({
+      name: Joi.string().min(2).max(30),
+      email: Joi.string().email(),
+    }),
+  }),
+  patchMe,
+);
 
 module.exports = router;

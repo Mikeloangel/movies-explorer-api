@@ -27,7 +27,7 @@ const userSchema = mongoose.Schema({
   },
 });
 
-// finds user returns user data of reject promise
+// checks user credentials ant returns user on success
 // eslint-disable-next-line func-names
 userSchema.statics.findUserByCredentials = function ({ email, password }) {
   return this.findOne({ email }).select('+password')

@@ -14,8 +14,8 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const { errors } = require('celebrate');
 const cors = require('cors');
-// const expressLimiter = require('express-rate-limit');
-// const helmet = require('helmet');
+const expressLimiter = require('express-rate-limit');
+const helmet = require('helmet');
 
 // middlewares
 const { handleErrors } = require('./middlewares/handleErrors');
@@ -29,42 +29,40 @@ mongoose.connect(`${DB_URL}/${DB_NAME}`);
 const app = express();
 
 // rate limiter
-// const limiter = expressLimiter({
-//   windowMs: 15 * 60 * 1000,
-//   max: 100,
-// });
+const limiter = expressLimiter({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+});
 
-// app.use(limiter);
+app.use(limiter);
 
-// causes CORS needs to fix
 // helmet
-// app.use(helmet());
+app.use(helmet());
 
-// // cors
-// const options = {
-//   origin: [
-//     'http://localhost:3000',
-//     'http://mestology.nomoredomains.club',
-//     'https://mestology.nomoredomains.club',
-//   ],
-//   methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
-//   preflightContinue: false,
-//   optionsSuccessStatus: 204,
-//   allowedHeaders:
-//     [
-//       'Content-Type',
-//       'origin',
-//       'Authorization',
-//       'Accept',
-//       'Access-Control-Allow-Headers',
-//       'credentials',
-//       'withCredentials',
-//     ],
-//   credentials: true,
-// };
+// cors
+const options = {
+  origin: [
+    'http://localhost:3000',
+    'http://mestology.nomoredomains.club',
+    'https://mestology.nomoredomains.club',
+  ],
+  methods: ['GET', 'HEAD', 'PATCH', 'POST', 'DELETE'],
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+  allowedHeaders:
+    [
+      'Content-Type',
+      'origin',
+      'Authorization',
+      'Accept',
+      'Access-Control-Allow-Headers',
+      'credentials',
+      'withCredentials',
+    ],
+  credentials: true,
+};
 
-// app.use('*', cors(options));
-app.use('*', cors());
+app.use('*', cors(options));
 
 // cookie parser
 app.use(cookieParser());
@@ -89,9 +87,4 @@ app.use(errors());
 app.use(handleErrors);
 
 // server
-app.listen(PORT, () => {
-  // eslint-disable-next-line no-console
-  console.log(`Server started at port ${PORT}`);
-  // eslint-disable-next-line no-console
-  console.log('Welcome to Bitfilms backend API');
-});
+app.listen(PORT, () => {});
