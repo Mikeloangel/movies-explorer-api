@@ -12,14 +12,14 @@ const mongoose = require('mongoose');
 
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-// const { errors } = require('celebrate');
+const { errors } = require('celebrate');
 const cors = require('cors');
 // const expressLimiter = require('express-rate-limit');
 // const helmet = require('helmet');
 
 // middlewares
-// const { handleErrors } = require('./middlewares/handleErrors');
-// const { errorLogger, requestLogger } = require('./middlewares/logger');
+const { handleErrors } = require('./middlewares/handleErrors');
+const { errorLogger, requestLogger } = require('./middlewares/logger');
 
 // routes
 const indexRoutes = require('./routes/index');
@@ -74,19 +74,19 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // request logger
-// app.use(requestLogger);
+app.use(requestLogger);
 
 // routes
 app.use(indexRoutes);
 
 // error logger
-// app.use(errorLogger);
+app.use(errorLogger);
 
 // error handling
 // celebrate validation errors
-// app.use(errors());
+app.use(errors());
 // centralized error handling
-// app.use(handleErrors);
+app.use(handleErrors);
 
 // server
 app.listen(PORT, () => {

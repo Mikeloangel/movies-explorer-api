@@ -19,7 +19,7 @@ module.exports.postMovie = (req, res, next) => {
     nameEN,
   } = req.body;
 
-  const _id = req.user;
+  const { _id } = req.user;
 
   Movie.create({
     country,
@@ -46,13 +46,13 @@ module.exports.postMovie = (req, res, next) => {
 };
 
 module.exports.deleteMovie = (req, res, next) => {
-  const _id = req.user;
+  const { _id: userId } = req.user;
   const { id: movieId } = req.params;
 
   Movie.findOne({ _id: movieId })
     .orFail()
     .then((movie) => {
-      if (movie.owner.toString() !== _id) {
+      if (movie.owner.toString() !== userId) {
         next(new ForbiddenError('нет доступа к этой записи'));
         return;
       }
@@ -75,7 +75,7 @@ module.exports.deleteMovie = (req, res, next) => {
 };
 
 module.exports.getMovies = (req, res, next) => {
-  const _id = req.user;
+  const { _id } = req.user;
 
   Movie.find({ owner: _id })
     .then((cards) => res.send(cards))
