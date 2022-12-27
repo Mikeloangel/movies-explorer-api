@@ -40,6 +40,7 @@ app.use(helmet());
 
 // cors
 app.use('*', cors(corsOptions));
+// app.use('*', cors());
 
 // cookie parser
 app.use(cookieParser());

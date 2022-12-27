@@ -2,8 +2,10 @@
 module.exports.corsOptions = {
   origin: [
     'http://localhost:3000',
-    'http://mestology.nomoredomains.club',
-    'https://mestology.nomoredomains.club',
+    'http://lumiere.nomoredomains.club',
+    'https://lumiere.nomoredomains.club',
+    'http://filmoteka.nomoredomains.club',
+    'https://filmoteka.nomoredomains.club',
   ],
   methods: ['GET', 'HEAD', 'PATCH', 'POST', 'DELETE'],
   preflightContinue: false,

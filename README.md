@@ -34,4 +34,4 @@ Diploma backend project at Yandex.practicum.
 * npm run lint . - starts eslint validation
 
 ## Links
-* public URL:
+* public API URL: [https://lumiere.nomoredomains.club](https://lumiere.nomoredomains.club)
