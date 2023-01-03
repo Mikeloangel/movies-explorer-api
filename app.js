@@ -66,6 +66,4 @@ app.use(errors());
 app.use(handleErrors);
 
 // server
-app.listen(PORT, () => {
-  console.log('Hello');
-});
+app.listen(PORT, () => {});
