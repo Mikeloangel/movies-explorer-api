@@ -3,7 +3,10 @@
 // PATCH /me - updates user info (email, name)
 
 const router = require('express').Router();
-const { celebrate, Joi } = require('celebrate');
+const { celebrate } = require('celebrate');
+
+// validation schemas
+const userPatchSchema = require('../request_validation_schemas/user-patch');
 
 const {
   getMe,
@@ -14,15 +17,6 @@ const {
 router.get('/me', getMe);
 
 // patch me
-router.patch(
-  '/me',
-  celebrate({
-    body: Joi.object().keys({
-      name: Joi.string().min(2).max(30),
-      email: Joi.string().email(),
-    }),
-  }),
-  patchMe,
-);
+router.patch('/me', celebrate({ body: userPatchSchema }), patchMe);
 
 module.exports = router;

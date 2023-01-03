@@ -5,33 +5,18 @@
 
 const router = require('express').Router();
 
-const { Joi, celebrate } = require('celebrate');
+const { celebrate } = require('celebrate');
 const { login, logout, createUser } = require('../controllers/users');
 
+// validation schemas
+const authSigninSchema = require('../request_validation_schemas/auth-signin');
+const authSignupSchema = require('../request_validation_schemas/auth-signup');
+
 // signin
-router.post(
-  '/signin',
-  celebrate({
-    body: Joi.object().keys({
-      email: Joi.string().required().email(),
-      password: Joi.string().required(),
-    }),
-  }),
-  login,
-);
+router.post('/signin', celebrate({ body: authSigninSchema }), login);
 
 // signup
-router.post(
-  '/signup',
-  celebrate({
-    body: Joi.object().keys({
-      email: Joi.string().required().email(),
-      name: Joi.string().min(2).max(30),
-      password: Joi.string().required(),
-    }),
-  }),
-  createUser,
-);
+router.post('/signup', celebrate({ body: authSignupSchema }), createUser);
 
 // signout
 router.get('/signout', logout);

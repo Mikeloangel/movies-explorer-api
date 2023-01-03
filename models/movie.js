@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const isURL = require('validator/lib/isURL');
 
 const movieSchema = mongoose.Schema({
   country: {
@@ -25,8 +26,7 @@ const movieSchema = mongoose.Schema({
     type: String,
     required: true,
     validate: {
-      // eslint-disable-next-line
-      validator: (v) => /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&\/=]*)/gmi.test(v),
+      validator: (v) => isURL(v),
       message: (props) => `${props.value} неверный адрес!`,
     },
   },
@@ -34,8 +34,7 @@ const movieSchema = mongoose.Schema({
     type: String,
     required: true,
     validate: {
-      // eslint-disable-next-line
-      validator: (v) => /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&\/=]*)/gmi.test(v),
+      validator: (v) => isURL(v),
       message: (props) => `${props.value} неверный адрес!`,
     },
   },
@@ -43,8 +42,7 @@ const movieSchema = mongoose.Schema({
     type: String,
     required: true,
     validate: {
-      // eslint-disable-next-line
-      validator: (v) => /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&\/=]*)/gmi.test(v),
+      validator: (v) => isURL(v),
       message: (props) => `${props.value} неверный адрес!`,
     },
   },
@@ -54,7 +52,7 @@ const movieSchema = mongoose.Schema({
     required: true,
   },
   movieId: {
-    type: String,
+    type: Number,
     required: true,
   },
   nameRU: {

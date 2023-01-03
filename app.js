@@ -26,11 +26,15 @@ const { limiterSettings } = require('./utils/ratelimiter');
 const { corsOptions } = require('./utils/corsoptions');
 
 // routes
-const indexRoutes = require('./routes/index');
+const indexRoutes = require('./routes');
 
 // db and app
+mongoose.set('strictQuery', false);
 mongoose.connect(`${DB_URL}/${DB_NAME}`);
 const app = express();
+
+// request logger
+app.use(requestLogger);
 
 // rate limiter
 app.use(expressLimiter(limiterSettings));
@@ -49,11 +53,8 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// request logger
-app.use(requestLogger);
-
 // routes
-app.use(indexRoutes);
+app.use('/api', indexRoutes);
 
 // error logger
 app.use(errorLogger);
@@ -66,6 +67,5 @@ app.use(handleErrors);
 
 // server
 app.listen(PORT, () => {
-  // eslint-disable-next-line
-  console.log(`Movies backend runs on PORT: ${PORT}`);
+  console.log('Hello');
 });

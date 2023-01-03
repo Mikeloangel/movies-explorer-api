@@ -28,8 +28,7 @@ const userSchema = mongoose.Schema({
 });
 
 // checks user credentials ant returns user on success
-// eslint-disable-next-line func-names
-userSchema.statics.findUserByCredentials = function ({ email, password }) {
+function findUserByCredentials({ email, password }) {
   return this.findOne({ email }).select('+password')
     .then((user) => {
       if (!user) {
@@ -44,6 +43,8 @@ userSchema.statics.findUserByCredentials = function ({ email, password }) {
           return Promise.resolve(user);
         });
     });
-};
+}
+
+userSchema.statics.findUserByCredentials = findUserByCredentials;
 
 module.exports = mongoose.model('user', userSchema);

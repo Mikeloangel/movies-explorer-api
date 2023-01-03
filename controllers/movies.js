@@ -5,36 +5,9 @@ const ForbiddenError = require('../errors/ForbiddenError');
 const ResourceNotFoundError = require('../errors/not-found-error');
 
 module.exports.postMovie = (req, res, next) => {
-  const {
-    country,
-    director,
-    duration,
-    year,
-    description,
-    image,
-    trailerLink,
-    thumbnail,
-    movieId,
-    nameRU,
-    nameEN,
-  } = req.body;
-
   const { _id } = req.user;
 
-  Movie.create({
-    country,
-    director,
-    duration,
-    year,
-    description,
-    image,
-    trailerLink,
-    thumbnail,
-    movieId,
-    nameRU,
-    nameEN,
-    owner: _id,
-  })
+  Movie.create({ ...req.body, owner: _id })
     .then((movie) => res.status(201).send(movie))
     .catch((err) => {
       if (err.name === 'ValidationError') {

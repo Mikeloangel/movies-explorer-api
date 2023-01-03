@@ -9,7 +9,6 @@ const WrongDataError = require('../errors/wrong-data-error');
 // returns current user data
 module.exports.getMe = (req, res, next) => {
   User.findById(req.user._id)
-    .orFail()
     .then((user) => {
       res.send(user);
     })
@@ -24,7 +23,9 @@ module.exports.patchMe = (req, res, next) => {
   User.findByIdAndUpdate(_id, { name, email }, { new: true, runValidators: true })
     .then((updatedUser) => res.send(updatedUser))
     .catch((err) => {
-      if (err.name === 'ValidationError') {
+      if (err.code === 11000) {
+        next(new UserExistsError());
+      } else if (err.name === 'ValidationError') {
         next(new WrongDataError());
       } else {
         next(err);
