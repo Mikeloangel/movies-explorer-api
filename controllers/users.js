@@ -88,13 +88,26 @@ module.exports.login = (req, res, next) => {
       res.send({ message: 'ok' });
     })
     .catch((err) => {
-      res.clearCookie('jwt');
+      // res.clearCookie('jwt');
+      res.cookie('jwt', '', {
+        maxAge: 3600000 * 24 * 7,
+        httpOnly: true,
+        sameSite: 'none',
+        secure: NODE_ENV === 'production',
+      });
       next(err);
     });
 };
 
 // logout controller
 module.exports.logout = (req, res) => {
-  res.clearCookie('jwt');
+  // res.clearCookie('jwt');
+  const { NODE_ENV } = process.env;
+  res.cookie('jwt', '', {
+    maxAge: 3600000 * 24 * 7,
+    httpOnly: true,
+    sameSite: 'none',
+    secure: NODE_ENV === 'production',
+  });
   res.send({ message: 'До новых встреч!' });
 };
