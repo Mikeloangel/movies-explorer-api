@@ -66,4 +66,7 @@ app.use(errors());
 app.use(handleErrors);
 
 // server
-app.listen(PORT, () => {});
+app.listen(PORT, () => {
+  // eslint-disable-next-line
+  console.log(`Welcome to Movies Explorer API at PORT ${PORT}`);
+});
