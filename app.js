@@ -15,7 +15,7 @@ const cookieParser = require('cookie-parser');
 const { errors } = require('celebrate');
 const cors = require('cors');
 const expressLimiter = require('express-rate-limit');
-const helmet = require('helmet');
+// const helmet = require('helmet');
 
 // middlewares
 const { handleErrors } = require('./middlewares/handleErrors');
@@ -40,13 +40,7 @@ app.use(requestLogger);
 app.use(expressLimiter(limiterSettings));
 
 // helmet
-app.use(helmet(
-  {
-    crossOriginEmbedderPolicy: false,
-    crossOriginOpenerPolicy: false,
-    crossOriginResourcePolicy: { policy: 'cross-origin' },
-  },
-));
+// app.use(helmet());
 
 // cors
 app.use('*', cors(corsOptions));

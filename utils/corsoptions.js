@@ -7,18 +7,17 @@ module.exports.corsOptions = {
     'http://filmoteka.nomoredomains.club',
     'https://filmoteka.nomoredomains.club',
   ],
-  methods: ['GET', 'HEAD', 'PATCH', 'POST', 'DELETE'],
+  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
   preflightContinue: false,
   optionsSuccessStatus: 204,
-  allowedHeaders:
-    [
-      'Content-Type',
-      'origin',
-      'Authorization',
-      'Accept',
-      'Access-Control-Allow-Headers',
-      'credentials',
-      'withCredentials',
-    ],
+  allowedHeaders: [
+    'Content-Type',
+    'origin',
+    'Authorization',
+    'Accept',
+    'Access-Control-Allow-Headers',
+    'credentials',
+    'withCredentials',
+  ],
   credentials: true,
 };
