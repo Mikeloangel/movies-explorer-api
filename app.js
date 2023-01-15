@@ -40,7 +40,13 @@ app.use(requestLogger);
 app.use(expressLimiter(limiterSettings));
 
 // helmet
-app.use(helmet());
+app.use(helmet(
+  {
+    crossOriginEmbedderPolicy: false,
+    crossOriginOpenerPolicy: false,
+    crossOriginResourcePolicy: { policy: 'cross-origin' },
+  },
+));
 
 // cors
 app.use('*', cors(corsOptions));
